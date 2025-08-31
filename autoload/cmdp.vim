@@ -24,11 +24,11 @@ function! cmdp#OpenCommandPopup()
         \ 'border': [1,1,1,1],
         \ 'borderchars': ['─', '│', '─', '│', '┌', '┐', '┘', '└'],
         \ 'mapping': 0,
-        \ 'filter': 'SimplePopupFilter',
-        \ 'callback': 'CommandPopupCallback'
+        \ 'filter': 'cmdp#SimplePopupFilter',
+        \ 'callback': 'cmdp#CommandPopupCallback'
     \ })
     
-    call UpdatePopupDisplay()
+    call cmdp#UpdatePopupDisplay()
 endfunction
 
 function! cmdp#UpdatePopupDisplay()
@@ -54,18 +54,18 @@ function! cmdp#SimplePopupFilter(id, key)
     elseif a:key == "\<BS>" 
         if len(s:current_input) > 0
             let s:current_input = s:current_input[:-2]
-            call UpdatePopupDisplay()
+            call cmdp#UpdatePopupDisplay()
         endif
         return 1
         
     elseif a:key =~ '^[ -~]$' 
         let s:current_input .= a:key
-        call UpdatePopupDisplay()
+        call cmdp#UpdatePopupDisplay()
         return 1
         
     elseif a:key == "\<C-u>" 
         let s:current_input = ""
-        call UpdatePopupDisplay()
+        call cmdp#UpdatePopupDisplay()
         return 1
     endif
     
@@ -76,4 +76,3 @@ function! cmdp#CommandPopupCallback(id, result)
     let s:command_popup = -1
 endfunction
 
-nnoremap <leader>c :call OpenCommandPopup()<CR>
